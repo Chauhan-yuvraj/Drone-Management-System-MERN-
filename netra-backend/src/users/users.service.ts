@@ -31,4 +31,26 @@ export class UsersService {
     const user = await this.userModel.findOne({ email }).exec();
     return user ? user.toObject() : undefined;
   }
+
+  async updateRefreshToken(userId: string, token: string): Promise<void> {
+    if (!token) {
+      await this.userModel.findByIdAndUpdate(userId, {
+        refreshTokenHash: null,
+      });
+      return;
+    }
+
+    const salt = await bcrypt.genSalt(10);
+    const hashedToken = await bcrypt.hash(token, salt);
+
+    await this.userModel.findByIdAndUpdate(userId, {
+      refreshTokenHash: hashedToken,
+    });
+  }
+  async findOneById(id: string): Promise<User | undefined> {
+    const user = await this.userModel.findById(id).exec();
+
+    // Explicitly return the found user object or undefined if null
+    return user ? user.toObject() : undefined;
+  }
 }

@@ -9,7 +9,7 @@ export default function Signup() {
   const dispatch = useAppDispatch();
 
   const [name, setName] = useState("");
-  const [number, setNumber] = useState("");
+  const [phoneNumber, setPhoneNumber] = useState("");
   const [email, setEmail] = useState("");
   const [area, setArea] = useState("");
   const [password, setPassword] = useState("");
@@ -17,7 +17,7 @@ export default function Signup() {
   const handleSignup = async (e: React.FormEvent) => {
     e.preventDefault();
     const resultAction = await dispatch(
-      signupUser({ name, number, area, email, password })
+      signupUser({ name, phoneNumber, area, email, password })
     );
 
     if (signupUser.fulfilled.match(resultAction)) {
@@ -47,8 +47,8 @@ export default function Signup() {
           <input
             type="tel"
             placeholder="Phone Number"
-            value={number}
-            onChange={(e) => setNumber(e.target.value)}
+            value={phoneNumber}
+            onChange={(e) => setPhoneNumber(e.target.value)}
             required
             pattern="[0-9]{10}"
             className="border border-gray-300 rounded-lg px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
