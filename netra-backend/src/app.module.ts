@@ -16,9 +16,7 @@ import databaseConfig from './config/database.config';
 
     // Connect to MongoDB
     DatabaseModule,
-
     UsersModule,
-
     AuthModule,
   ],
   controllers: [AppController],

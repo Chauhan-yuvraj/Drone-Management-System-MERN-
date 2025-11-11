@@ -9,6 +9,13 @@ import { CreateUserDto } from './dto/create-user.dto';
 export class UsersService {
   constructor(@InjectModel(User.name) private userModel: Model<UserDocument>) {}
 
+  async findOneById(id: string): Promise<User | undefined> {
+    const user = await this.userModel.findById(id).exec();
+
+    // Explicitly return the found user object or undefined if null
+    return user ? user.toObject() : undefined;
+  }
+
   // Helper function to hash passwords
   private async hashPassword(password: string): Promise<string> {
     const salt = await bcrypt.genSalt(10);
@@ -46,11 +53,5 @@ export class UsersService {
     await this.userModel.findByIdAndUpdate(userId, {
       refreshTokenHash: hashedToken,
     });
-  }
-  async findOneById(id: string): Promise<User | undefined> {
-    const user = await this.userModel.findById(id).exec();
-
-    // Explicitly return the found user object or undefined if null
-    return user ? user.toObject() : undefined;
   }
 }
