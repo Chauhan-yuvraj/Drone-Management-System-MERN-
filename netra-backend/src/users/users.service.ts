@@ -38,20 +38,14 @@ export class UsersService {
     const user = await this.userModel.findOne({ email }).exec();
     return user ? user.toObject() : undefined;
   }
-
-  async updateRefreshToken(userId: string, token: string): Promise<void> {
-    if (!token) {
-      await this.userModel.findByIdAndUpdate(userId, {
-        refreshTokenHash: null,
-      });
-      return;
-    }
-
-    const salt = await bcrypt.genSalt(10);
-    const hashedToken = await bcrypt.hash(token, salt);
-
-    await this.userModel.findByIdAndUpdate(userId, {
-      refreshTokenHash: hashedToken,
-    });
+  // Method to update the user's refresh tokens (add the new one)
+  async updateRefreshToken(
+    userId: string,
+    refreshToken: string,
+  ): Promise<void> {
+    await this.userModel.updateOne(
+      { _id: userId },
+      { $push: { refreshTokens: refreshToken } },
+    );
   }
 }

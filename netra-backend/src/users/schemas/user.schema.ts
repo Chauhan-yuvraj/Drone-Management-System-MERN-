@@ -20,8 +20,8 @@ export class User {
   @Prop({ required: true })
   name: string;
 
-  @Prop({ default: null })
-  refreshTokenHash: string;
+  @Prop({ default: null, type: [String] })
+  refreshTokenHash: string[];
 }
 
 export const UserSchema = SchemaFactory.createForClass(User);
